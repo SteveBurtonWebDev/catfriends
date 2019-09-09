@@ -1,6 +1,6 @@
 ## Catfriends
 
-I made this app as part of a Udemy course, demonstrating how React can be used to quickly build and render separate components.
+I made this app as part of a Udemy course, demonstrating how React can be used to quickly build and render separate components.  Later i added Redux (as a way of learning Redux) for state management.
 
 The initial app used randomly generated robots, which I changed to cats.
 
