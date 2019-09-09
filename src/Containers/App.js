@@ -5,42 +5,37 @@ import SearchBox from '../Components/SearchBox'
 import Scroll from '../Components/Scroll'
 import ErrorBoundary from '../Components/ErrorBoundary'
 import './App.css';
-import { setSearchField } from '../actions.js';
+import { setSearchField, requestCats } from '../actions.js';
 
 const mapStateToProps = state => {
     return {
-        searchField: state.searchField
+        searchField: state.searchCats.searchField,
+        animals: state.requestCats.animals,
+        isPending: state.requestCats.isPending,
+        error: state.requestCats.error
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onSearchChange: (event) => dispatch(setSearchField(event.target.value))
+        onSearchChange: (event) => dispatch(setSearchField(event.target.value)),
+        onRequestCats: () => dispatch(requestCats())
     }
 }
 
 
 class App extends Component {
-    constructor() {
-        super();
-        this.state = {
-            animals: [],
-        }
-    }
-    
+      
     componentDidMount() {
-        fetch('https://jsonplaceholder.typicode.com/users')
-            .then(response=> response.json())
-            .then(users => this.setState({ animals: users}))   
+      this.props.onRequestCats();
     }
    
     render() {
-        const { animals } = this.state;
-        const { searchField, onSearchChange } = this.props;
+        const { searchField, onSearchChange, animals, isPending } = this.props;
         const filteredAnimals = animals.filter(animal => {
             return animal.name.toLowerCase().includes(searchField.toLowerCase());
         })
-        return  !animals.length ? 
+        return  isPending ? 
             <h1>Loading</h1> :
             <div className ='tc'>
                 <h1 className='f1'>Cat Friends</h1>
